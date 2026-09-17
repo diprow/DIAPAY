@@ -36,6 +36,7 @@ DRY_RUN = os.environ.get("DRY_RUN", "") == "1"
 BRAND_EMOJI   = os.environ.get("BRAND_EMOJI", "💠")
 BRAND_NAME    = os.environ.get("BRAND_NAME", "دیاپی")
 BRAND_TAGLINE = os.environ.get("BRAND_TAGLINE", "تبدیل ارز بدون مرز")
+BRAND_CONTACT = os.environ.get("BRAND_CONTACT", "@YOURID")
 BRAND_LINK    = os.environ.get("BRAND_LINK", "@diapayit")
 
 # نام‌های احتمالی هر آیتم در پاسخ API (اولین کلید موجود استفاده می‌شود)
@@ -240,6 +241,8 @@ def build_message(snap, deltas):
         if BRAND_TAGLINE:
             sig += f" — <i>{BRAND_TAGLINE}</i>"
         lines.append(sig)
+        if BRAND_CONTACT:
+            lines.append(f"💬 استعلام و سفارش: {BRAND_CONTACT}")
         if BRAND_LINK:
             lines.append(f"🔗 {BRAND_LINK}")
 
