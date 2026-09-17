@@ -407,8 +407,67 @@ def run_manual(path):
     print("نرخ‌های دستی اعمال شد:", applied)
 
 
+# ---------------------------------------------------------------- آگهی
+AD_CUR = {"EUR": ("یورو", "🇪🇺"), "USD": ("دلار", "🇺🇸"), "USDT": ("تتر", "💵")}
+
+
+def _esc(t):
+    return str(t or "").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
+def run_announce(path):
+    """یک آگهی را در کانال می‌فرستد و فایل نوتیف وب‌اپ آن را می‌سازد."""
+    with open(path, encoding="utf-8") as f:
+        ad = json.load(f)
+    kind = "فروش" if ad.get("type") == "sell" else "خرید"
+    icon = "🟢" if ad.get("type") == "sell" else "🔵"
+    cur, flag = AD_CUR.get(ad.get("currency"), (ad.get("currency", ""), "💱"))
+    amount = to_float(ad.get("amount"))
+    rate = to_float(ad.get("rate"))
+    if not amount:
+        sys.exit("مبلغ آگهی نامعتبر است.")
+
+    lines = [f"📢 <b>آگهی {kind} دیاپی</b>", ""]
+    lines.append(f"{icon} <b>{kind}</b> {flag} <code>{fa_num(amount)}</code> {cur}")
+    if rate:
+        lines.append(f"💰 نرخ: <code>{fa_num(rate)}</code> تومان")
+    if ad.get("note"):
+        lines.append(f"📝 {_esc(ad['note'])}")
+    lines += ["", "━━━━━━━━━━━━━━"]
+    if BRAND_NAME:
+        sig = f"{BRAND_EMOJI} <b>{BRAND_NAME}</b>"
+        if BRAND_TAGLINE:
+            sig += f" — <i>{BRAND_TAGLINE}</i>"
+        lines.append(sig)
+    if BRAND_CONTACT:
+        lines.append(f"💬 برای این آگهی پیام دهید: {BRAND_CONTACT}")
+    if BRAND_LINK:
+        lines.append(f"🔗 {BRAND_LINK}")
+    msg = "\n".join(lines)
+
+    if ad.get("post", True):
+        if DRY_RUN:
+            print("--- DRY RUN ---")
+            print(msg)
+        else:
+            send_telegram(msg)
+            print("آگهی در کانال ارسال شد.")
+
+    out = os.environ.get("NOTIFY_OUT", "")
+    if out and ad.get("notify", True):
+        body = f"{kind} {fa_num(amount)} {cur}" + (f" · نرخ {fa_num(rate)} تومان" if rate else "")
+        with open(out, "w", encoding="utf-8") as f:
+            json.dump({"title": "آگهی جدید دیاپی", "body": body, "url": "./#home", "tag": "diapay-ad"},
+                      f, ensure_ascii=False)
+        print("فایل نوتیف ساخته شد.")
+
+
 # ---------------------------------------------------------------- اجرا
 def main():
+    if "--announce" in sys.argv:
+        run_announce(sys.argv[sys.argv.index("--announce") + 1])
+        return
+
     if "--manual" in sys.argv:
         run_manual(sys.argv[sys.argv.index("--manual") + 1])
         return
