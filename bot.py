@@ -353,8 +353,66 @@ def send_telegram(text):
     sys.exit(f"ارسال به تلگرام ناموفق بود: {res}")
 
 
+# ---------------------------------------------------------------- ارسال دستی
+def run_manual(path):
+    """
+    نرخ‌های دستی (از manual.json) را در کانال می‌فرستد و روی سایت می‌گذارد.
+    مبنای بقیه‌ی آیتم‌ها آخرین rates.json است؛ به API نوسان درخواستی نمی‌زند.
+    state.json تغییر نمی‌کند تا ربات ساعتی مثل قبل با آخرین نرخ خودکار مقایسه کند.
+    """
+    with open(path, encoding="utf-8") as f:
+        manual = json.load(f)
+    try:
+        with open(PUBLIC_JSON, encoding="utf-8") as f:
+            base = json.load(f)
+    except (OSError, ValueError):
+        sys.exit(f"{PUBLIC_JSON} پیدا نشد؛ اول یک بار ربات خودکار را اجرا کنید.")
+
+    snap, deltas = {}, {}
+    for it in base.get("items", []):
+        snap[it["id"]] = {"title": it["title"], "emoji": it["emoji"], "buy": it["value"],
+                          "sell": it["value"], "single": True, "change": it.get("change", 0), "date": ""}
+    rates = manual.get("rates", manual)
+    applied = {}
+    for k, v in rates.items():
+        if k not in snap:
+            continue
+        new = to_float(v)
+        if new is None:
+            continue
+        diff = new - snap[k]["sell"]
+        snap[k]["buy"] = snap[k]["sell"] = new
+        snap[k]["change"] = diff
+        if diff:
+            deltas[k] = {"sell": diff}
+        applied[k] = new
+    if not applied:
+        sys.exit(f"هیچ نرخ معتبری در {path} نبود.")
+
+    write_public_json(snap)
+    with open(PUBLIC_JSON, encoding="utf-8") as f:
+        pub = json.load(f)
+    pub["manual"] = True
+    with open(PUBLIC_JSON, "w", encoding="utf-8") as f:
+        json.dump(pub, f, ensure_ascii=False, indent=2)
+
+    if manual.get("post", True):
+        msg = build_message(snap, deltas)
+        if DRY_RUN:
+            print("--- DRY RUN ---")
+            print(msg)
+        else:
+            send_telegram(msg)
+            print("پیام دستی با موفقیت ارسال شد.")
+    print("نرخ‌های دستی اعمال شد:", applied)
+
+
 # ---------------------------------------------------------------- اجرا
 def main():
+    if "--manual" in sys.argv:
+        run_manual(sys.argv[sys.argv.index("--manual") + 1])
+        return
+
     if "--list-keys" in sys.argv:
         print(json.dumps(fetch_rates(), ensure_ascii=False, indent=2))
         return
