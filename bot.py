@@ -39,7 +39,7 @@ BRAND_EMOJI   = os.environ.get("BRAND_EMOJI", "💠")
 BRAND_NAME    = os.environ.get("BRAND_NAME", "دیاپی")
 BRAND_TAGLINE = os.environ.get("BRAND_TAGLINE", "تبدیل ارز بدون مرز")
 BRAND_CONTACT = os.environ.get("BRAND_CONTACT", "@diapayadmin")
-BRAND_LINK    = os.environ.get("BRAND_LINK", "@diapayit")
+BRAND_LINK    = os.environ.get("BRAND_LINK", "@diapaychanel")
 
 # نام‌های احتمالی هر آیتم در پاسخ API (اولین کلید موجود استفاده می‌شود)
 # (شناسه, عنوان, ایموجی, [کلیدهای خرید], [کلیدهای فروش], ضریب واحد)
