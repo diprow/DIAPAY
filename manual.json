@@ -1,8 +1,1 @@
-{
-  "rates": {
-    "eur": 263800,
-    "usd": 230200
-  },
-  "post": true,
-  "requested_at": "2026-09-17T05:51:06+00:00"
-}
+{"rates":{"eur":262800,"usd":229200},"post":true}
