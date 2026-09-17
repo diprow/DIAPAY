@@ -32,6 +32,12 @@ TRIGGER_ITEMS = [s.strip() for s in os.environ.get("TRIGGER_ITEMS", "eur,usd").s
 
 DRY_RUN = os.environ.get("DRY_RUN", "") == "1"
 
+# ---- امضای برند (از ورک‌فلو قابل تغییر است) ----
+BRAND_EMOJI   = os.environ.get("BRAND_EMOJI", "💠")
+BRAND_NAME    = os.environ.get("BRAND_NAME", "دیاپی")
+BRAND_TAGLINE = os.environ.get("BRAND_TAGLINE", "تبدیل ارز بدون مرز")
+BRAND_LINK    = os.environ.get("BRAND_LINK", "@diapayit")
+
 # نام‌های احتمالی هر آیتم در پاسخ API (اولین کلید موجود استفاده می‌شود)
 # (شناسه, عنوان, ایموجی, [کلیدهای خرید], [کلیدهای فروش], ضریب واحد)
 # ضریب ۱۰۰۰ برای آیتم‌هایی که نوسان به «هزار تومان» می‌دهد
@@ -226,6 +232,17 @@ def build_message(snap, deltas):
     clock = f"{now.hour:02d}:{now.minute:02d}".translate(FA_DIGITS)
     lines.append("━━━━━━━━━━━━━━")
     lines.append(f"🕒 ساعت {clock} به وقت تهران")
+
+    # امضای برند
+    if BRAND_NAME:
+        lines.append("")
+        sig = f"{BRAND_EMOJI} <b>{BRAND_NAME}</b>"
+        if BRAND_TAGLINE:
+            sig += f" — <i>{BRAND_TAGLINE}</i>"
+        lines.append(sig)
+        if BRAND_LINK:
+            lines.append(f"🔗 {BRAND_LINK}")
+
     return "\n".join(lines)
 
 
