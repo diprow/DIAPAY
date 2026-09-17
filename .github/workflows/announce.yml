@@ -1,0 +1,48 @@
+name: ارسال آگهی
+
+# با هر تغییر فایل announce.json اجرا می‌شود:
+# آگهی را در کانال تلگرام می‌فرستد و برای مشترک‌های وب‌اپ نوتیف می‌دهد.
+on:
+  push:
+    branches: [main]
+    paths: ['announce.json']
+  workflow_dispatch:
+
+concurrency:
+  group: announce
+  cancel-in-progress: false
+
+jobs:
+  announce:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: ارسال آگهی به کانال
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID:   ${{ secrets.TELEGRAM_CHAT_ID }}
+          BRAND_EMOJI:   '💠'
+          BRAND_NAME:    'دیاپی'
+          BRAND_TAGLINE: 'تبدیل ارز بدون مرز'
+          BRAND_CONTACT: '@diapayadmin'
+          BRAND_LINK:    '@diapaychanel'
+          NOTIFY_OUT:    'ad-notify.json'
+        run: python bot.py --announce announce.json
+
+      - name: نوتیف وب‌اپ
+        if: hashFiles('ad-notify.json') != ''
+        env:
+          SUPABASE_URL: 'https://aznelawjlyoklmjcxylq.supabase.co'
+          SUPABASE_KEY: 'sb_publishable_4Lhz2fJueL6UuRYHcmMWGA_bDmZZ6-R'
+          PUSH_SENDER_SECRET: ${{ secrets.PUSH_SENDER_SECRET }}
+          VAPID_PRIVATE_KEY:  ${{ secrets.VAPID_PRIVATE_KEY }}
+        run: |
+          pip install pywebpush==2.5.0
+          python notify.py ad-notify.json
