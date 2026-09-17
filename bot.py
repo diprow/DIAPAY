@@ -33,17 +33,21 @@ TRIGGER_ITEMS = [s.strip() for s in os.environ.get("TRIGGER_ITEMS", "eur,usd").s
 DRY_RUN = os.environ.get("DRY_RUN", "") == "1"
 
 # نام‌های احتمالی هر آیتم در پاسخ API (اولین کلید موجود استفاده می‌شود)
+# (شناسه, عنوان, ایموجی, [کلیدهای خرید], [کلیدهای فروش], ضریب واحد)
+# ضریب ۱۰۰۰ برای آیتم‌هایی که نوسان به «هزار تومان» می‌دهد
 SPEC = [
-    # (شناسه, عنوان فارسی, ایموجی, [کلیدهای خرید], [کلیدهای فروش])
-    ("eur", "یورو",            "🇪🇺", ["eur_buy", "eur"],            ["eur_sell", "eur"]),
-    ("usd", "دلار آمریکا",     "🇺🇸", ["usd_buy", "harat_naghdi_buy"], ["usd_sell", "harat_naghdi_sell"]),
-    ("sekee", "سکه امامی",     "🪙", ["sekee"],                       ["sekee"]),
-    ("sekeb", "سکه بهار آزادی", "🪙", ["sekeb"],                      ["sekeb"]),
-    ("nim", "نیم‌سکه",          "🪙", ["nim"],                        ["nim"]),
-    ("rob", "ربع‌سکه",          "🪙", ["rob"],                        ["rob"]),
-    ("18ayar", "طلا ۱۸ عیار (گرم)", "🥇", ["18ayar"],                 ["18ayar"]),
-    ("mesghal", "مثقال طلا",   "🥇", ["mesghal"],                     ["mesghal"]),
+    ("eur",      "یورو",              "🇪🇺", ["eur"],       ["eur"],       1),
+    ("usd",      "دلار آمریکا",       "🇺🇸", ["usd_buy"],   ["usd_sell"],  1),
+    ("sekkeh",   "سکه امامی",         "🪙", ["sekkeh"],    ["sekkeh"],    1000),
+    ("bahar",    "سکه بهار آزادی",    "🪙", ["bahar"],     ["bahar"],     1000),
+    ("nim",      "نیم‌سکه",            "🪙", ["nim"],       ["nim"],       1000),
+    ("rob",      "ربع‌سکه",            "🪙", ["rob"],       ["rob"],       1000),
+    ("gerami",   "سکه گرمی",          "🪙", ["gerami"],    ["gerami"],    1000),
+    ("18ayar",   "طلای ۱۸ عیار (گرم)", "🥇", ["18ayar"],    ["18ayar"],    1),
+    ("abshodeh", "مثقال طلا (آبشده)", "🥇", ["abshodeh"],  ["abshodeh"],  1000),
 ]
+
+GOLD_ORDER = ["sekkeh", "bahar", "nim", "rob", "gerami", "18ayar", "abshodeh"]
 
 FA_DIGITS = str.maketrans("0123456789", "۰۱۲۳۴۵۶۷۸۹")
 
@@ -96,21 +100,22 @@ def fetch_rates():
 def build_snapshot(data):
     """از پاسخ خام، دیکشنری تمیزی از آیتم‌های موجود می‌سازد."""
     snap = {}
-    for item_id, title, emoji, buy_keys, sell_keys in SPEC:
+    for item_id, title, emoji, buy_keys, sell_keys, mult in SPEC:
         bk, bnode = pick(data, buy_keys)
         sk, snode = pick(data, sell_keys)
         if bnode is None and snode is None:
             continue
         node = bnode or snode
-        buy = to_float(bnode["value"]) / UNIT_DIVISOR if bnode else None
-        sell = to_float(snode["value"]) / UNIT_DIVISOR if snode else None
+        scale = mult / UNIT_DIVISOR
+        buy = to_float(bnode["value"]) * scale if bnode else None
+        sell = to_float(snode["value"]) * scale if snode else None
         snap[item_id] = {
             "title": title,
             "emoji": emoji,
             "buy": buy,
             "sell": sell,
-            "single": bk == sk,          # نرخ خرید و فروش جدا ندارد
-            "change": to_float(node.get("change")) or 0.0,
+            "single": bk == sk,
+            "change": (to_float(node.get("change")) or 0.0) * scale,
             "date": node.get("date", ""),
         }
     return snap
@@ -206,7 +211,7 @@ def build_message(snap, deltas):
         lines.append("")
 
     # طلا و سکه
-    gold = [i for i in ("sekee", "sekeb", "nim", "rob", "18ayar", "mesghal") if i in snap]
+    gold = [i for i in GOLD_ORDER if i in snap]
     if gold:
         lines.append("━━━━━━━━━━━━━━")
         lines.append("🥇 <b>طلا و سکه</b>")
