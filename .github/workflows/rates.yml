@@ -2,8 +2,15 @@ name: ارسال نرخ ارز به تلگرام
 
 on:
   schedule:
-    - cron: '30 5,9,12,16 * * *'
-  workflow_dispatch:
+    # چهار نوبت در روز، شنبه تا چهارشنبه — به وقت تهران (UTC+3:30)
+    - cron: '30 6  * * 0-3,6'   # ۱۰:۰۰
+    - cron: '0  9  * * 0-3,6'   # ۱۲:۳۰
+    - cron: '30 11 * * 0-3,6'   # ۱۵:۰۰
+    - cron: '0  14 * * 0-3,6'   # ۱۷:۳۰
+    #
+    # ≈ ۸۸ درخواست در ماه — داخل سهمیه‌ی رایگان (۱۲۰) ✅
+
+  workflow_dispatch:      # امکان اجرای دستی از تب Actions
 
 concurrency:
   group: rates
@@ -13,7 +20,7 @@ jobs:
   post:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: write     # برای ذخیره state.json بین اجراها
 
     steps:
       - uses: actions/checkout@v4
@@ -22,24 +29,28 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: run bot
+      - name: اجرای ربات
         env:
           NAVASAN_API_KEY:    ${{ secrets.NAVASAN_API_KEY }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID:   ${{ secrets.TELEGRAM_CHAT_ID }}
+          # اگر مقادیر API ریال بودند این را 10 بگذارید
           UNIT_DIVISOR:  '1'
+          # حداقل درصد تغییر برای ارسال پیام (مثلاً 0.2 = دو دهم درصد)
           MIN_CHANGE_PCT: '0'
+          # فقط تغییر این آیتم‌ها باعث ارسال پیام می‌شود
           TRIGGER_ITEMS: 'eur,usd'
+          BRAND_CONTACT: '@diapayadmin'
         run: python bot.py
 
-      - name: save state
+      - name: ذخیره آخرین قیمت‌ها
         run: |
           if [[ -n "$(git status --porcelain state.json)" ]]; then
             git config user.name  "rates-bot"
             git config user.email "rates-bot@users.noreply.github.com"
             git add state.json
-            git commit -m "chore: update rates [skip ci]"
+            git commit -m "chore: بروزرسانی آخرین نرخ‌ها [skip ci]"
             git push
           else
-            echo "no change"
+            echo "تغییری در state نبود."
           fi
