@@ -18,6 +18,8 @@ from datetime import datetime, timedelta, timezone
 # ---------------------------------------------------------------- تنظیمات
 API_URL = "http://api.navasan.tech/latest/"
 STATE_FILE = os.environ.get("STATE_FILE", "state.json")
+# فایل عمومی نرخ‌ها برای وب‌اپ (در هر اجرا نوشته می‌شود)
+PUBLIC_JSON = os.environ.get("PUBLIC_JSON", "rates.json")
 
 API_KEY = os.environ.get("NAVASAN_API_KEY", "")
 BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
@@ -114,7 +116,7 @@ def build_snapshot(data):
         sk, snode = pick(data, sell_keys)
         if bnode is None and snode is None:
             continue
-        node = bnode or snode
+        node = snode or bnode          # نرخ فروش نمایش داده می‌شود
         scale = mult / UNIT_DIVISOR
         buy = to_float(bnode["value"]) * scale if bnode else None
         sell = to_float(snode["value"]) * scale if snode else None
@@ -173,6 +175,41 @@ def changed_since_last(snap, state):
                 if item_id in TRIGGER_ITEMS and pct >= MIN_CHANGE_PCT:
                     triggered = True
     return triggered, deltas
+
+
+# ---------------------------------------------------------------- خروجی عمومی برای سایت
+def write_public_json(snap):
+    """rates.json را برای وب‌اپ می‌نویسد — در هر اجرا، چه پیام برود چه نرود."""
+    now_utc = datetime.now(timezone.utc)
+    teh = tehran_now()
+    items = []
+    for item_id in ["eur", "usd"] + GOLD_ORDER:
+        d = snap.get(item_id)
+        if not d:
+            continue
+        value = d["sell"] if d["sell"] is not None else d["buy"]
+        if value is None:
+            continue
+        items.append({
+            "id": item_id,
+            "title": d["title"],
+            "emoji": d["emoji"],
+            "group": "currency" if item_id in ("eur", "usd") else "gold",
+            "value": round(value),
+            "change": round(d["change"] or 0),
+        })
+    api_date = next((d["date"] for d in snap.values() if d.get("date")), "")
+    payload = {
+        "updated_iso": now_utc.replace(microsecond=0).isoformat(),
+        "updated_fa": teh.strftime("%H:%M"),
+        "updated_date": api_date.split(" ")[0] if api_date else "",
+        "currency": "toman",
+        "source": "navasan.tech",
+        "items": items,
+    }
+    with open(PUBLIC_JSON, "w", encoding="utf-8") as f:
+        json.dump(payload, f, ensure_ascii=False, indent=2)
+    print(f"{PUBLIC_JSON} نوشته شد ({len(items)} آیتم).")
 
 
 # ---------------------------------------------------------------- ساخت پیام
@@ -331,6 +368,8 @@ def main():
     snap = build_snapshot(data)
     if not snap:
         sys.exit("هیچ آیتم شناخته‌شده‌ای در پاسخ API پیدا نشد. با --list-keys کلیدها را ببینید.")
+
+    write_public_json(snap)
 
     state = load_state()
     triggered, deltas = changed_since_last(snap, state)
