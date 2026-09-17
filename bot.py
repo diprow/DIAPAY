@@ -8,7 +8,9 @@
 
 import json
 import os
+import re
 import sys
+import urllib.error
 import urllib.parse
 import urllib.request
 from datetime import datetime, timedelta, timezone
@@ -250,22 +252,68 @@ def build_message(snap, deltas):
 
 
 # ---------------------------------------------------------------- تلگرام
+def _tg_call(text, parse_mode="HTML"):
+    """یک درخواست به تلگرام. خروجی: (ok, پاسخ یا متن خطا)"""
+    url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+    fields = {
+        "chat_id": CHAT_ID,
+        "text": text,
+        "disable_web_page_preview": "true",
+    }
+    if parse_mode:
+        fields["parse_mode"] = parse_mode
+    req = urllib.request.Request(url, data=urllib.parse.urlencode(fields).encode())
+    try:
+        with urllib.request.urlopen(req, timeout=25) as r:
+            return True, json.loads(r.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        try:
+            body = json.loads(e.read().decode("utf-8"))
+            desc = body.get("description", "")
+        except Exception:
+            desc = f"HTTP {e.code}"
+        return False, desc
+    except Exception as e:
+        return False, str(e)
+
+
+def strip_tags(text):
+    return re.sub(r"</?(b|i|u|s|code|pre|a)[^>]*>", "", text)
+
+
 def send_telegram(text):
     if not BOT_TOKEN or not CHAT_ID:
         sys.exit("خطا: TELEGRAM_BOT_TOKEN یا TELEGRAM_CHAT_ID تنظیم نشده است.")
-    url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
-    payload = urllib.parse.urlencode({
-        "chat_id": CHAT_ID,
-        "text": text,
-        "parse_mode": "HTML",
-        "disable_web_page_preview": "true",
-    }).encode()
-    req = urllib.request.Request(url, data=payload)
-    with urllib.request.urlopen(req, timeout=25) as r:
-        res = json.loads(r.read().decode("utf-8"))
-    if not res.get("ok"):
-        sys.exit(f"ارسال به تلگرام ناموفق بود: {res}")
-    return res
+
+    ok, res = _tg_call(text, "HTML")
+    if ok:
+        return res
+
+    print(f"⚠️ تلگرام پیام را با HTML نپذیرفت: {res}")
+
+    # اگر ایراد از قالب‌بندی بود، بدون HTML دوباره امتحان کن
+    if "entit" in str(res).lower() or "parse" in str(res).lower() or "tag" in str(res).lower():
+        print("↩️ تلاش دوباره بدون قالب‌بندی HTML...")
+        ok2, res2 = _tg_call(strip_tags(text), None)
+        if ok2:
+            print("✅ پیام بدون قالب‌بندی ارسال شد.")
+            return res2
+        res = res2
+
+    # راهنمای خطاهای رایج
+    hints = {
+        "chat not found":   "شناسه‌ی کانال (TELEGRAM_CHAT_ID) اشتباه است یا ربات ادمین کانال نیست.",
+        "bot was blocked":  "ربات از کانال حذف یا بلاک شده است.",
+        "not enough rights":"ربات دسترسی Post Messages در کانال ندارد.",
+        "unauthorized":     "توکن ربات (TELEGRAM_BOT_TOKEN) اشتباه است.",
+        "chat_id is empty": "TELEGRAM_CHAT_ID خالی است.",
+    }
+    low = str(res).lower()
+    for k, v in hints.items():
+        if k in low:
+            sys.exit(f"ارسال ناموفق: {res}\n👈 {v}")
+
+    sys.exit(f"ارسال به تلگرام ناموفق بود: {res}")
 
 
 # ---------------------------------------------------------------- اجرا
