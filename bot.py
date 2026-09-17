@@ -185,21 +185,24 @@ def build_message(snap, deltas):
     now = tehran_now()
     lines = ["📊 <b>نرخ لحظه‌ای ارز و طلا</b>", ""]
 
+    def price_line(item_id, d, indent=True):
+        val = d["sell"] if d["sell"] is not None else d["buy"]
+        step = (deltas.get(item_id) or {}).get("sell") or (deltas.get(item_id) or {}).get("buy")
+        mark = arrow(step) if step else arrow(d["change"])
+        tail = ""
+        if step:
+            sign = "+" if step > 0 else "−"
+            tail = f"  <i>({sign}{fa_num(abs(step))})</i>"
+        pad = "   " if indent else ""
+        return f"{pad}{mark} <code>{fa_num(val)}</code> تومان{tail}"
+
     # ارزها
     for item_id in ("eur", "usd"):
         d = snap.get(item_id)
         if not d:
             continue
         lines.append(f"{d['emoji']} <b>{d['title']}</b>")
-        if d["single"]:
-            lines.append(f"   قیمت: <code>{fa_num(d['sell'] or d['buy'])}</code> تومان")
-        else:
-            lines.append(f"   خرید: <code>{fa_num(d['buy'])}</code> تومان")
-            lines.append(f"   فروش: <code>{fa_num(d['sell'])}</code> تومان")
-        lines.append(f"   تغییر امروز: {fmt_change(d['change'])}")
-        step = (deltas.get(item_id) or {}).get("sell") or (deltas.get(item_id) or {}).get("buy")
-        if step:
-            lines.append(f"   نسبت به پیام قبل: {fmt_change(step)}")
+        lines.append(price_line(item_id, d))
         lines.append("")
 
     # طلا و سکه
@@ -209,16 +212,15 @@ def build_message(snap, deltas):
         lines.append("🥇 <b>طلا و سکه</b>")
         for item_id in gold:
             d = snap[item_id]
-            val = d["sell"] or d["buy"]
-            lines.append(f"{arrow(d['change'])} {d['title']}: <code>{fa_num(val)}</code> تومان")
+            val = d["sell"] if d["sell"] is not None else d["buy"]
+            step = (deltas.get(item_id) or {}).get("sell") or (deltas.get(item_id) or {}).get("buy")
+            mark = arrow(step) if step else arrow(d["change"])
+            lines.append(f"{mark} {d['title']}: <code>{fa_num(val)}</code> تومان")
         lines.append("")
 
-    lines.append("━━━━━━━━━━━━━━")
     clock = f"{now.hour:02d}:{now.minute:02d}".translate(FA_DIGITS)
-    jdate = snap.get("eur", {}).get("date") or next(iter(snap.values())).get("date", "")
-    jdate = jdate.split(" ")[0].translate(FA_DIGITS)
-    lines.append(f"🕒 ساعت {clock} به وقت تهران" + (f"  |  📅 {jdate}" if jdate else ""))
-    lines.append("🔗 منبع: navasan.tech")
+    lines.append("━━━━━━━━━━━━━━")
+    lines.append(f"🕒 ساعت {clock} به وقت تهران")
     return "\n".join(lines)
 
 
