@@ -1,0 +1,35 @@
+name: ارسال نوتیف وب‌اپ
+
+# با هر تغییر فایل notify.json اجرا می‌شود و نوتیف را برای همه‌ی مشترک‌های وب‌اپ می‌فرستد.
+on:
+  push:
+    branches: [main]
+    paths: ['notify.json']
+  workflow_dispatch:
+
+concurrency:
+  group: notify
+  cancel-in-progress: false
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: نصب کتابخانه
+        run: pip install pywebpush==2.5.0
+
+      - name: ارسال نوتیف
+        env:
+          SUPABASE_URL: 'https://aznelawjlyoklmjcxylq.supabase.co'
+          SUPABASE_KEY: 'sb_publishable_4Lhz2fJueL6UuRYHcmMWGA_bDmZZ6-R'
+          PUSH_SENDER_SECRET: ${{ secrets.PUSH_SENDER_SECRET }}
+          VAPID_PRIVATE_KEY:  ${{ secrets.VAPID_PRIVATE_KEY }}
+        run: python notify.py notify.json
