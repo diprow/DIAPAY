@@ -36,7 +36,7 @@ DRY_RUN = os.environ.get("DRY_RUN", "") == "1"
 BRAND_EMOJI   = os.environ.get("BRAND_EMOJI", "💠")
 BRAND_NAME    = os.environ.get("BRAND_NAME", "دیاپی")
 BRAND_TAGLINE = os.environ.get("BRAND_TAGLINE", "تبدیل ارز بدون مرز")
-BRAND_CONTACT = os.environ.get("BRAND_CONTACT", "@YOURID")
+BRAND_CONTACT = os.environ.get("BRAND_CONTACT", "@diapayadmin")
 BRAND_LINK    = os.environ.get("BRAND_LINK", "@diapayit")
 
 # نام‌های احتمالی هر آیتم در پاسخ API (اولین کلید موجود استفاده می‌شود)
