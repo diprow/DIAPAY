@@ -1,7 +1,7 @@
 {
-  "updated_iso": "2026-09-20T14:50:08+00:00",
-  "updated_fa": "18:20",
-  "updated_date": "1405-06-29",
+  "updated_iso": "2026-09-21T12:41:55+00:00",
+  "updated_fa": "16:11",
+  "updated_date": "1405-06-30",
   "currency": "toman",
   "source": "navasan.tech",
   "items": [
@@ -10,72 +10,72 @@
       "title": "یورو",
       "emoji": "🇪🇺",
       "group": "currency",
-      "value": 264990,
-      "change": 580
+      "value": 265240,
+      "change": 830
     },
     {
       "id": "usd",
       "title": "دلار آمریکا",
       "emoji": "🇺🇸",
       "group": "currency",
-      "value": 230700,
-      "change": 500
+      "value": 231000,
+      "change": 800
     },
     {
       "id": "sekkeh",
       "title": "سکه امامی",
       "emoji": "🪙",
       "group": "gold",
-      "value": 239000000,
-      "change": 1500000
+      "value": 236500000,
+      "change": -2500000
     },
     {
       "id": "bahar",
       "title": "سکه بهار آزادی",
       "emoji": "🪙",
       "group": "gold",
-      "value": 235000000,
-      "change": 2000000
+      "value": 232000000,
+      "change": -3000000
     },
     {
       "id": "nim",
       "title": "نیم‌سکه",
       "emoji": "🪙",
       "group": "gold",
-      "value": 122000000,
-      "change": 1000000
+      "value": 121000000,
+      "change": -1000000
     },
     {
       "id": "rob",
       "title": "ربع‌سکه",
       "emoji": "🪙",
       "group": "gold",
-      "value": 65000000,
-      "change": 500000
+      "value": 63500000,
+      "change": -1500000
     },
     {
       "id": "gerami",
       "title": "سکه گرمی",
       "emoji": "🪙",
       "group": "gold",
-      "value": 35000000,
-      "change": 2000000
+      "value": 34000000,
+      "change": -1000000
     },
     {
       "id": "18ayar",
       "title": "طلای ۱۸ عیار (گرم)",
       "emoji": "🥇",
       "group": "gold",
-      "value": 24149310,
-      "change": 198530
+      "value": 23805350,
+      "change": -203150
     },
     {
       "id": "abshodeh",
       "title": "مثقال طلا (آبشده)",
       "emoji": "🥇",
       "group": "gold",
-      "value": 104610000,
-      "change": 860000
+      "value": 103120000,
+      "change": -880000
     }
   ]
 }
