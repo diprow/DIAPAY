@@ -1,6 +1,6 @@
 {
-  "updated_iso": "2026-09-24T17:05:29+00:00",
-  "updated_fa": "20:35",
+  "updated_iso": "2026-09-25T06:37:10+00:00",
+  "updated_fa": "10:07",
   "updated_date": "1405-07-02",
   "currency": "toman",
   "source": "navasan.tech",
@@ -10,16 +10,16 @@
       "title": "یورو",
       "emoji": "🇪🇺",
       "group": "currency",
-      "value": 266000,
-      "change": 1510
+      "value": 266340,
+      "change": 0
     },
     {
       "id": "usd",
       "title": "دلار آمریکا",
       "emoji": "🇺🇸",
       "group": "currency",
-      "value": 233700,
-      "change": 1500
+      "value": 234000,
+      "change": 0
     },
     {
       "id": "sekkeh",
@@ -27,7 +27,7 @@
       "emoji": "🪙",
       "group": "gold",
       "value": 240000000,
-      "change": 3500000
+      "change": 0
     },
     {
       "id": "bahar",
@@ -35,7 +35,7 @@
       "emoji": "🪙",
       "group": "gold",
       "value": 236000000,
-      "change": 4000000
+      "change": 0
     },
     {
       "id": "nim",
@@ -43,7 +43,7 @@
       "emoji": "🪙",
       "group": "gold",
       "value": 123000000,
-      "change": 1500000
+      "change": 0
     },
     {
       "id": "rob",
@@ -51,7 +51,7 @@
       "emoji": "🪙",
       "group": "gold",
       "value": 65000000,
-      "change": 1000000
+      "change": 0
     },
     {
       "id": "gerami",
@@ -67,7 +67,7 @@
       "emoji": "🥇",
       "group": "gold",
       "value": 23996950,
-      "change": 34620
+      "change": -57720
     },
     {
       "id": "abshodeh",
@@ -75,7 +75,7 @@
       "emoji": "🥇",
       "group": "gold",
       "value": 103950000,
-      "change": 150000
+      "change": -250000
     }
   ]
 }
