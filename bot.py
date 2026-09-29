@@ -234,61 +234,34 @@ def tehran_now():
 
 def build_message(snap, deltas):
     now = tehran_now()
-    lines = ["📊 <b>نرخ لحظه‌ای ارز و طلا</b>", ""]
+    clock = f"{now.hour:02d}:{now.minute:02d}"
+    lines = ["\U0001F4CA <b>نرخ لحظه‌ای ارز</b>", ""]
 
-    def price_line(item_id, d, indent=True):
+    for item_id in ("eur", "usd"):
+        d = snap.get(item_id)
+        if not d:
+            continue
         val = d["sell"] if d["sell"] is not None else d["buy"]
         step = (deltas.get(item_id) or {}).get("sell") or (deltas.get(item_id) or {}).get("buy")
         mark = arrow(step) if step else arrow(d["change"])
         tail = ""
         if step:
-            sign = "+" if step > 0 else "−"
-            tail = f"  <i>({sign}{fa_num(abs(step))})</i>"
-        pad = "   " if indent else ""
-        return f"{pad}{mark} <code>{fa_num(val)}</code> تومان{tail}"
+            sign = "+" if step > 0 else "-"
+            tail = f"  <i>({sign}{int(abs(step)):,})</i>"
+        lines.append(f"{d['emoji']} <b>{d['title']}</b>  <code>{int(val):,}</code> تومان  {mark}{tail}")
 
-    # ارزها
-    for item_id in ("eur", "usd"):
-        d = snap.get(item_id)
-        if not d:
-            continue
-        lines.append(f"{d['emoji']} <b>{d['title']}</b>")
-        lines.append(price_line(item_id, d))
-        lines.append("")
+    lines.append("")
+    lines.append(f"\U0001F552 {clock} به وقت تهران")
 
-    # طلا و سکه
-    gold = [i for i in GOLD_ORDER if i in snap]
-    if gold:
-        lines.append("━━━━━━━━━━━━━━")
-        lines.append("🥇 <b>طلا و سکه</b>")
-        for item_id in gold:
-            d = snap[item_id]
-            val = d["sell"] if d["sell"] is not None else d["buy"]
-            step = (deltas.get(item_id) or {}).get("sell") or (deltas.get(item_id) or {}).get("buy")
-            mark = arrow(step) if step else arrow(d["change"])
-            lines.append(f"{mark} {d['title']}: <code>{fa_num(val)}</code> تومان")
-        lines.append("")
-
-    clock = f"{now.hour:02d}:{now.minute:02d}".translate(FA_DIGITS)
-    lines.append("━━━━━━━━━━━━━━")
-    lines.append(f"🕒 ساعت {clock} به وقت تهران")
-
-    # امضای برند
     if BRAND_NAME:
-        lines.append("")
         sig = f"{BRAND_EMOJI} <b>{BRAND_NAME}</b>"
         if BRAND_TAGLINE:
-            sig += f" — <i>{BRAND_TAGLINE}</i>"
+            sig += f" - <i>{BRAND_TAGLINE}</i>"
         lines.append(sig)
-        if BRAND_CONTACT:
-            lines.append(f"💬 استعلام و سفارش: {BRAND_CONTACT}")
-        if BRAND_LINK:
-            lines.append(f"🔗 {BRAND_LINK}")
 
     return "\n".join(lines)
 
 
-# ---------------------------------------------------------------- تلگرام
 def _tg_call(text, parse_mode="HTML"):
     """یک درخواست به تلگرام. خروجی: (ok, پاسخ یا متن خطا)"""
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
