@@ -235,7 +235,7 @@ def tehran_now():
 def build_message(snap, deltas):
     now = tehran_now()
     clock = f"{now.hour:02d}:{now.minute:02d}"
-    lines = ["\U0001F4CA <b>نرخ لحظه‌ای ارز</b>", ""]
+    lines = []
 
     for item_id in ("eur", "usd"):
         d = snap.get(item_id)
@@ -248,16 +248,10 @@ def build_message(snap, deltas):
         if step:
             sign = "+" if step > 0 else "-"
             tail = f"  <i>({sign}{int(abs(step)):,})</i>"
-        lines.append(f"{d['emoji']} <b>{d['title']}</b>  <code>{int(val):,}</code> تومان  {mark}{tail}")
+        lines.append(f"{d['emoji']} <b>{d['title']}</b>  <code>{int(val):,}</code> \u062a\u0648\u0645\u0627\u0646  {mark}{tail}")
 
     lines.append("")
-    lines.append(f"\U0001F552 {clock} به وقت تهران")
-
-    if BRAND_NAME:
-        sig = f"{BRAND_EMOJI} <b>{BRAND_NAME}</b>"
-        if BRAND_TAGLINE:
-            sig += f" - <i>{BRAND_TAGLINE}</i>"
-        lines.append(sig)
+    lines.append(f"\U0001F552 {clock} \u0628\u0647 \u0648\u0642\u062a \u062a\u0647\u0631\u0627\u0646")
 
     return "\n".join(lines)
 
