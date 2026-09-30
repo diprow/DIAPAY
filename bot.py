@@ -232,9 +232,11 @@ def tehran_now():
     return datetime.now(timezone.utc) + timedelta(hours=3, minutes=30)
 
 
+SHORT_TITLES = {"eur": "\u06cc\u0648\u0631\u0648", "usd": "\u062f\u0644\u0627\u0631"}
+
+
 def build_message(snap, deltas):
     now = tehran_now()
-    clock = f"{now.hour:02d}:{now.minute:02d}"
     lines = []
 
     for item_id in ("eur", "usd"):
@@ -244,14 +246,14 @@ def build_message(snap, deltas):
         val = d["sell"] if d["sell"] is not None else d["buy"]
         step = (deltas.get(item_id) or {}).get("sell") or (deltas.get(item_id) or {}).get("buy")
         mark = arrow(step) if step else arrow(d["change"])
-        tail = ""
-        if step:
-            sign = "+" if step > 0 else "-"
-            tail = f"  <i>({sign}{int(abs(step)):,})</i>"
-        lines.append(f"{d['emoji']} <b>{d['title']}</b>  <code>{int(val):,}</code> \u062a\u0648\u0645\u0627\u0646  {mark}{tail}")
+        title = SHORT_TITLES.get(item_id, d["title"])
+        num = f"\u200e{int(val):,}\u200e"
+        tail = f" \u200e{int(abs(step)):,}\u200e" if step else ""
+        lines.append(f"\u200f{d['emoji']} <b>{title}</b>  <code>{num}</code> \u062a\u0648\u0645\u0627\u0646  {mark}{tail}")
 
     lines.append("")
-    lines.append(f"\U0001F552 {clock} \u0628\u0647 \u0648\u0642\u062a \u062a\u0647\u0631\u0627\u0646")
+    clock = f"\u200e{now.hour:02d}:{now.minute:02d}\u200e"
+    lines.append(f"\u200f\U0001F552 {clock} \u0628\u0647 \u0648\u0642\u062a \u062a\u0647\u0631\u0627\u0646")
 
     return "\n".join(lines)
 
