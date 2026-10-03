@@ -464,6 +464,18 @@ def main():
         print("قیمت تغییری نکرده — پیامی ارسال نشد.")
         return
 
+    gap = int(os.environ.get("POST_MIN_GAP_MIN", "60"))
+    last_post = (state or {}).get("saved_at")
+    if gap and last_post:
+        try:
+            prev_t = datetime.fromisoformat(last_post)
+            age_min = (datetime.now(timezone.utc) - prev_t).total_seconds() / 60
+        except ValueError:
+            age_min = None
+        if age_min is not None and age_min < gap:
+            print(f"فاصله‌ی پیام کمتر از {gap} دقیقه — فقط سایت به‌روز شد.")
+            return
+
     msg = build_message(snap, deltas)
 
     if DRY_RUN:
