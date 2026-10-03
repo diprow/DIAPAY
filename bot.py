@@ -254,6 +254,9 @@ def build_message(snap, deltas):
     lines.append("")
     clock = f"\u200e{now.hour:02d}:{now.minute:02d}\u200e"
     lines.append(f"\u200f\U0001F552 {clock} \u0628\u0647 \u0648\u0642\u062a \u062a\u0647\u0631\u0627\u0646")
+    lines.append(
+        "\u200f\U0001F517 <a href=\"https://diaprod.it/diapay/#rates\">\u0646\u0631\u062e \u0644\u062d\u0638\u0647\u200c\u0627\u06cc \u062f\u0631 \u0633\u0627\u06cc\u062a \u062f\u06cc\u0627\u067e\u06cc</a>"
+    )
 
     return "\n".join(lines)
 
