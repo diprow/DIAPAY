@@ -42,6 +42,10 @@ BRAND_NAME    = os.environ.get("BRAND_NAME", "دیاپی")
 BRAND_TAGLINE = os.environ.get("BRAND_TAGLINE", "تبدیل ارز بدون مرز")
 BRAND_CONTACT = os.environ.get("BRAND_CONTACT", "@diapayadmin")
 BRAND_LINK    = os.environ.get("BRAND_LINK", "@diapaychanel")
+SITE_URL      = os.environ.get("SITE_URL", "https://diaprod.it/diapay/#rates")
+ORDER_URL     = os.environ.get("ORDER_URL", "https://t.me/diapayadmin")
+SPIKE_LIMIT   = float(os.environ.get("SPIKE_LIMIT", "5000"))
+DAILY_HOUR    = int(os.environ.get("DAILY_HOUR", "21"))
 
 # نام‌های احتمالی هر آیتم در پاسخ API (اولین کلید موجود استفاده می‌شود)
 # (شناسه, عنوان, ایموجی, [کلیدهای خرید], [کلیدهای فروش], ضریب واحد)
@@ -141,13 +145,69 @@ def load_state():
         return {}
 
 
-def save_state(snap):
-    payload = {
-        "saved_at": datetime.now(timezone.utc).isoformat(),
-        "values": {k: {"buy": v["buy"], "sell": v["sell"]} for k, v in snap.items()},
-    }
+def write_state(state):
     with open(STATE_FILE, "w", encoding="utf-8") as f:
-        json.dump(payload, f, ensure_ascii=False, indent=2)
+        json.dump(state, f, ensure_ascii=False, indent=2)
+
+
+def save_state(snap, state=None):
+    """\u067e\u0633 \u0627\u0632 \u0627\u0631\u0633\u0627\u0644 \u067e\u06cc\u0627\u0645: \u0645\u0642\u062f\u0627\u0631\u0647\u0627 \u0648 \u0632\u0645\u0627\u0646 \u0622\u062e\u0631\u06cc\u0646 \u067e\u06cc\u0627\u0645 \u0631\u0627 \u062b\u0628\u062a \u0645\u06cc\u200c\u06a9\u0646\u062f."""
+    state = dict(state or {})
+    state["saved_at"] = datetime.now(timezone.utc).isoformat()
+    state["values"] = {k: {"buy": v["buy"], "sell": v["sell"]} for k, v in snap.items()}
+    write_state(state)
+    return state
+
+
+def track_day(state, snap):
+    """\u06a9\u0645\u062a\u0631\u06cc\u0646 \u0648 \u0628\u06cc\u0634\u062a\u0631\u06cc\u0646 \u0627\u0645\u0631\u0648\u0632 \u0631\u0627 \u0646\u06af\u0647 \u0645\u06cc\u200c\u062f\u0627\u0631\u062f."""
+    today = tehran_now().strftime("%Y-%m-%d")
+    day = state.get("day") or {}
+    if day.get("date") != today:
+        day = {"date": today, "open": {}, "high": {}, "low": {}, "summary_sent": False}
+
+    for item_id in ("eur", "usd"):
+        d = snap.get(item_id)
+        if not d:
+            continue
+        val = d["sell"] if d["sell"] is not None else d["buy"]
+        if val is None:
+            continue
+        val = int(val)
+        day["open"].setdefault(item_id, val)
+        day["high"][item_id] = max(int(day["high"].get(item_id, val)), val)
+        day["low"][item_id] = min(int(day["low"].get(item_id, val)), val)
+
+    state["day"] = day
+    return day
+
+
+def build_daily_message(snap, day):
+    now = tehran_now()
+    lines = ["\u200f\U0001F4CA <b>\u062c\u0645\u0639\u200c\u0628\u0646\u062f\u06cc \u0627\u0645\u0631\u0648\u0632</b>", ""]
+
+    for item_id in ("eur", "usd"):
+        d = snap.get(item_id)
+        if not d:
+            continue
+        val = int(d["sell"] if d["sell"] is not None else d["buy"])
+        title = SHORT_TITLES.get(item_id, d["title"])
+        opened = int(day.get("open", {}).get(item_id, val))
+        step = val - opened
+        mark = arrow(step) if step else "\u25aa\ufe0f"
+        tail = f" \u200e{abs(step):,}\u200e" if step else ""
+        lines.append(f"\u200f{d['emoji']} <b>{title}</b>  <code>\u200e{val:,}\u200e</code> \u062a\u0648\u0645\u0627\u0646  {mark}{tail}")
+        hi = int(day.get("high", {}).get(item_id, val))
+        lo = int(day.get("low", {}).get(item_id, val))
+        lines.append(
+            f"\u200f   \u0628\u0627\u0644\u0627\u062a\u0631\u06cc\u0646 \u200e{hi:,}\u200e \u00b7 \u067e\u0627\u06cc\u06cc\u0646\u200c\u062a\u0631\u06cc\u0646 \u200e{lo:,}\u200e"
+        )
+
+    lines.append("")
+    lines.append(
+        f"\u200f\U0001F552 \u067e\u0627\u06cc\u0627\u0646 \u0631\u0648\u0632 \u00b7 \u200e{now.hour:02d}:{now.minute:02d}\u200e \u0628\u0647 \u0648\u0642\u062a \u062a\u0647\u0631\u0627\u0646"
+    )
+    return "\n".join(lines)
 
 
 def changed_since_last(snap, state):
@@ -254,9 +314,6 @@ def build_message(snap, deltas):
     lines.append("")
     clock = f"\u200e{now.hour:02d}:{now.minute:02d}\u200e"
     lines.append(f"\u200f\U0001F552 {clock} \u0628\u0647 \u0648\u0642\u062a \u062a\u0647\u0631\u0627\u0646")
-    lines.append(
-        "\u200f\U0001F517 <a href=\"https://diaprod.it/diapay/#rates\">\u0646\u0631\u062e \u0644\u062d\u0638\u0647\u200c\u0627\u06cc \u062f\u0631 \u0633\u0627\u06cc\u062a \u062f\u06cc\u0627\u067e\u06cc</a>"
-    )
 
     return "\n".join(lines)
 
@@ -268,6 +325,12 @@ def _tg_call(text, parse_mode="HTML"):
         "chat_id": CHAT_ID,
         "text": text,
         "disable_web_page_preview": "true",
+        "reply_markup": json.dumps({
+            "inline_keyboard": [[
+                {"text": "\U0001F4AC \u062b\u0628\u062a \u0633\u0641\u0627\u0631\u0634", "url": ORDER_URL},
+                {"text": "\U0001F4CA \u0646\u0631\u062e \u0633\u0627\u06cc\u062a", "url": SITE_URL},
+            ]]
+        }, ensure_ascii=False),
     }
     if parse_mode:
         fields["parse_mode"] = parse_mode
@@ -461,30 +524,59 @@ def main():
     write_public_json(snap)
 
     state = load_state()
+    day = track_day(state, snap)
     triggered, deltas = changed_since_last(snap, state)
 
+    now = tehran_now()
     gap = int(os.environ.get("POST_MIN_GAP_MIN", "60"))
-    last_post = (state or {}).get("saved_at")
+    last_post = state.get("saved_at")
     age_min = None
     if last_post:
         try:
             age_min = (datetime.now(timezone.utc) - datetime.fromisoformat(last_post)).total_seconds() / 60
         except ValueError:
             age_min = None
-    if gap and age_min is not None and age_min < gap:
-        print(f"\u06a9\u0645\u062a\u0631 \u0627 \u0632 {gap} \u062f\u0642\u06cc\u0642\u0647 \u0627 \u0632 \u067e\u06cc\u0627\u0645 \u0642\u0628\u0644\u06cc \u06af\u0630\u0634\u062a\u0647 \u2014 \u0641\u0642\u0637 \u0633\u0627\u06cc\u062a \u0628\u0647\u200c\u0631\u0648\u0632 \u0634\u062f.")
+
+    # \u062c\u0645\u0639\u200c\u0628\u0646\u062f\u06cc \u067e\u0627\u06cc\u0627\u0646 \u0631\u0648\u0632
+    if now.hour >= DAILY_HOUR and not day.get("summary_sent"):
+        msg = build_daily_message(snap, day)
+        if DRY_RUN:
+            print("--- DRY RUN (daily) ---")
+            print(msg)
+        else:
+            send_telegram(msg)
+            print("\u062c\u0645\u0639\u200c\u0628\u0646\u062f\u06cc \u0631\u0648\u0632\u0627\u0646\u0647 \u0627\u0631\u0633\u0627\u0644 \u0634\u062f.")
+        day["summary_sent"] = True
+        state["day"] = day
+        save_state(snap, state)
+        return
+
+    # \u0646\u0648\u0633\u0627\u0646 \u0634\u062f\u06cc\u062f: \u0627\u0632 \u0646\u0648\u0628\u062a \u062e\u0627\u0631\u062c \u0645\u06cc\u200c\u0634\u0648\u062f
+    spike = 0.0
+    for item_id in ("eur", "usd"):
+        for side in ("sell", "buy"):
+            diff = (deltas.get(item_id) or {}).get(side)
+            if diff:
+                spike = max(spike, abs(diff))
+    is_spike = SPIKE_LIMIT > 0 and spike >= SPIKE_LIMIT
+
+    if gap and age_min is not None and age_min < gap and not is_spike:
+        print(f"\u06a9\u0645\u062a\u0631 \u0627\u0632 {gap} \u062f\u0642\u06cc\u0642\u0647 \u0627\u0632 \u067e\u06cc\u0627\u0645 \u0642\u0628\u0644\u06cc \u06af\u0630\u0634\u062a\u0647 \u2014 \u0641\u0642\u0637 \u0633\u0627\u06cc\u062a \u0628\u0647\u200c\u0631\u0648\u0632 \u0634\u062f.")
+        write_state(state)
         return
 
     msg = build_message(snap, deltas)
+    if is_spike:
+        msg = "\u200f\u26a0\ufe0f <b>\u0646\u0648\u0633\u0627\u0646 \u0634\u062f\u06cc\u062f</b>\n\n" + msg
 
     if DRY_RUN:
         print("--- DRY RUN ---")
         print(msg)
     else:
         send_telegram(msg)
-        print("پیام با موفقیت ارسال شد.")
+        print("\u067e\u06cc\u0627\u0645 \u0628\u0627 \u0645\u0648\u0641\u0642\u06cc\u062a \u0627\u0631\u0633\u0627\u0644 \u0634\u062f.")
 
-    save_state(snap)
+    save_state(snap, state)
 
 
 if __name__ == "__main__":
