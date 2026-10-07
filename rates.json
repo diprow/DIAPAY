@@ -1,6 +1,6 @@
 {
-  "updated_iso": "2026-10-07T08:06:11+00:00",
-  "updated_fa": "11:36",
+  "updated_iso": "2026-10-07T08:12:11+00:00",
+  "updated_fa": "11:42",
   "updated_date": "1405-07-15",
   "currency": "toman",
   "source": "navasan.tech",
@@ -26,16 +26,16 @@
       "title": "سکه امامی",
       "emoji": "🪙",
       "group": "gold",
-      "value": 272500000,
-      "change": -1000000
+      "value": 271000000,
+      "change": -2500000
     },
     {
       "id": "bahar",
       "title": "سکه بهار آزادی",
       "emoji": "🪙",
       "group": "gold",
-      "value": 261000000,
-      "change": -1000000
+      "value": 260000000,
+      "change": -2000000
     },
     {
       "id": "nim",
