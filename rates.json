@@ -1,6 +1,6 @@
 {
-  "updated_iso": "2026-10-07T10:42:09+00:00",
-  "updated_fa": "14:12",
+  "updated_iso": "2026-10-07T10:48:10+00:00",
+  "updated_fa": "14:18",
   "updated_date": "1405-07-15",
   "currency": "toman",
   "source": "navasan.tech",
@@ -18,8 +18,8 @@
       "title": "دلار آمریکا",
       "emoji": "🇺🇸",
       "group": "currency",
-      "value": 264300,
-      "change": -4700
+      "value": 264200,
+      "change": -4800
     },
     {
       "id": "sekkeh",
