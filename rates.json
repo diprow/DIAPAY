@@ -1,6 +1,6 @@
 {
-  "updated_iso": "2026-10-10T08:36:10+00:00",
-  "updated_fa": "12:06",
+  "updated_iso": "2026-10-10T08:42:09+00:00",
+  "updated_fa": "12:12",
   "updated_date": "1405-07-18",
   "currency": "toman",
   "source": "navasan.tech",
@@ -10,16 +10,16 @@
       "title": "یورو",
       "emoji": "🇪🇺",
       "group": "currency",
-      "value": 299720,
-      "change": -460
+      "value": 299610,
+      "change": -570
     },
     {
       "id": "usd",
       "title": "دلار آمریکا",
       "emoji": "🇺🇸",
       "group": "currency",
-      "value": 267500,
-      "change": -700
+      "value": 267400,
+      "change": -800
     },
     {
       "id": "sekkeh",
@@ -66,16 +66,16 @@
       "title": "طلای ۱۸ عیار (گرم)",
       "emoji": "🥇",
       "group": "gold",
-      "value": 26490140,
-      "change": -18470
+      "value": 26508610,
+      "change": 0
     },
     {
       "id": "abshodeh",
       "title": "مثقال طلا (آبشده)",
       "emoji": "🥇",
       "group": "gold",
-      "value": 114750000,
-      "change": -80000
+      "value": 114830000,
+      "change": 0
     }
   ]
 }
