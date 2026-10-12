@@ -1,6 +1,6 @@
 {
-  "updated_iso": "2026-10-12T14:30:09+00:00",
-  "updated_fa": "18:00",
+  "updated_iso": "2026-10-12T14:36:13+00:00",
+  "updated_fa": "18:06",
   "updated_date": "1405-07-20",
   "currency": "toman",
   "source": "navasan.tech",
@@ -26,8 +26,8 @@
       "title": "سکه امامی",
       "emoji": "🪙",
       "group": "gold",
-      "value": 265500000,
-      "change": -3000000
+      "value": 265000000,
+      "change": -3500000
     },
     {
       "id": "bahar",
@@ -50,8 +50,8 @@
       "title": "ربع‌سکه",
       "emoji": "🪙",
       "group": "gold",
-      "value": 75000000,
-      "change": -500000
+      "value": 74500000,
+      "change": -1000000
     },
     {
       "id": "gerami",
