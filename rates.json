@@ -1,6 +1,6 @@
 {
-  "updated_iso": "2026-10-17T13:36:08+00:00",
-  "updated_fa": "17:06",
+  "updated_iso": "2026-10-17T13:42:07+00:00",
+  "updated_fa": "17:12",
   "updated_date": "1405-07-25",
   "currency": "toman",
   "source": "navasan.tech",
@@ -42,16 +42,16 @@
       "title": "نیم‌سکه",
       "emoji": "🪙",
       "group": "gold",
-      "value": 141500000,
-      "change": -1500000
+      "value": 141000000,
+      "change": -2000000
     },
     {
       "id": "rob",
       "title": "ربع‌سکه",
       "emoji": "🪙",
       "group": "gold",
-      "value": 75500000,
-      "change": -1500000
+      "value": 75000000,
+      "change": -2000000
     },
     {
       "id": "gerami",
