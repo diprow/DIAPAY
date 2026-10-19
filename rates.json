@@ -1,6 +1,6 @@
 {
-  "updated_iso": "2026-10-18T18:54:10+00:00",
-  "updated_fa": "22:24",
+  "updated_iso": "2026-10-19T06:00:10+00:00",
+  "updated_fa": "09:30",
   "updated_date": "1405-07-26",
   "currency": "toman",
   "source": "navasan.tech",
@@ -11,7 +11,7 @@
       "emoji": "🇪🇺",
       "group": "currency",
       "value": 294860,
-      "change": -1350
+      "change": 0
     },
     {
       "id": "usd",
@@ -19,7 +19,7 @@
       "emoji": "🇺🇸",
       "group": "currency",
       "value": 262400,
-      "change": -1200
+      "change": 0
     },
     {
       "id": "sekkeh",
@@ -27,23 +27,23 @@
       "emoji": "🪙",
       "group": "gold",
       "value": 266000000,
-      "change": -500000
+      "change": 0
     },
     {
       "id": "bahar",
       "title": "سکه بهار آزادی",
       "emoji": "🪙",
       "group": "gold",
-      "value": 254000000,
-      "change": -3500000
+      "value": 255000000,
+      "change": 1000000
     },
     {
       "id": "nim",
       "title": "نیم‌سکه",
       "emoji": "🪙",
       "group": "gold",
-      "value": 139000000,
-      "change": -1500000
+      "value": 139500000,
+      "change": 500000
     },
     {
       "id": "rob",
@@ -51,7 +51,7 @@
       "emoji": "🪙",
       "group": "gold",
       "value": 74000000,
-      "change": -1000000
+      "change": 0
     },
     {
       "id": "gerami",
@@ -59,23 +59,23 @@
       "emoji": "🪙",
       "group": "gold",
       "value": 37000000,
-      "change": -1000000
+      "change": 0
     },
     {
       "id": "18ayar",
       "title": "طلای ۱۸ عیار (گرم)",
       "emoji": "🥇",
       "group": "gold",
-      "value": 25852990,
-      "change": -198540
+      "value": 25922250,
+      "change": 69260
     },
     {
       "id": "abshodeh",
       "title": "مثقال طلا (آبشده)",
       "emoji": "🥇",
       "group": "gold",
-      "value": 111990000,
-      "change": -860000
+      "value": 112290000,
+      "change": 300000
     }
   ]
 }
