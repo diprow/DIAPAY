@@ -1,6 +1,6 @@
 {
-  "updated_iso": "2026-11-10T18:54:09+00:00",
-  "updated_fa": "22:24",
+  "updated_iso": "2026-11-11T06:00:13+00:00",
+  "updated_fa": "09:30",
   "updated_date": "1405-08-19",
   "currency": "toman",
   "source": "navasan.tech",
@@ -11,7 +11,7 @@
       "emoji": "🇪🇺",
       "group": "currency",
       "value": 290940,
-      "change": -5000
+      "change": 0
     },
     {
       "id": "usd",
@@ -19,7 +19,7 @@
       "emoji": "🇺🇸",
       "group": "currency",
       "value": 260900,
-      "change": -3300
+      "change": 0
     },
     {
       "id": "sekkeh",
@@ -27,7 +27,7 @@
       "emoji": "🪙",
       "group": "gold",
       "value": 254000000,
-      "change": -5000000
+      "change": 0
     },
     {
       "id": "bahar",
@@ -35,7 +35,7 @@
       "emoji": "🪙",
       "group": "gold",
       "value": 246000000,
-      "change": -4000000
+      "change": 0
     },
     {
       "id": "nim",
@@ -43,7 +43,7 @@
       "emoji": "🪙",
       "group": "gold",
       "value": 133500000,
-      "change": -3000000
+      "change": 0
     },
     {
       "id": "rob",
@@ -51,7 +51,7 @@
       "emoji": "🪙",
       "group": "gold",
       "value": 72000000,
-      "change": -1000000
+      "change": 0
     },
     {
       "id": "gerami",
