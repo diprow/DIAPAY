@@ -1,6 +1,6 @@
 {
-  "updated_iso": "2026-11-11T18:54:09+00:00",
-  "updated_fa": "22:24",
+  "updated_iso": "2026-11-12T06:00:12+00:00",
+  "updated_fa": "09:30",
   "updated_date": "1405-08-20",
   "currency": "toman",
   "source": "navasan.tech",
@@ -11,7 +11,7 @@
       "emoji": "🇪🇺",
       "group": "currency",
       "value": 293080,
-      "change": 2140
+      "change": 0
     },
     {
       "id": "usd",
@@ -19,14 +19,14 @@
       "emoji": "🇺🇸",
       "group": "currency",
       "value": 264200,
-      "change": 3300
+      "change": 0
     },
     {
       "id": "sekkeh",
       "title": "سکه امامی",
       "emoji": "🪙",
       "group": "gold",
-      "value": 255000000,
+      "value": 256000000,
       "change": 1000000
     },
     {
@@ -34,7 +34,7 @@
       "title": "سکه بهار آزادی",
       "emoji": "🪙",
       "group": "gold",
-      "value": 247000000,
+      "value": 248000000,
       "change": 1000000
     },
     {
@@ -43,7 +43,7 @@
       "emoji": "🪙",
       "group": "gold",
       "value": 134500000,
-      "change": 1000000
+      "change": 0
     },
     {
       "id": "rob",
@@ -51,7 +51,7 @@
       "emoji": "🪙",
       "group": "gold",
       "value": 73000000,
-      "change": 1000000
+      "change": 0
     },
     {
       "id": "gerami",
