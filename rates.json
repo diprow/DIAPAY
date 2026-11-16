@@ -1,6 +1,6 @@
 {
-  "updated_iso": "2026-11-16T09:12:10+00:00",
-  "updated_fa": "12:42",
+  "updated_iso": "2026-11-16T09:18:10+00:00",
+  "updated_fa": "12:48",
   "updated_date": "1405-08-25",
   "currency": "toman",
   "source": "navasan.tech",
@@ -10,16 +10,16 @@
       "title": "یورو",
       "emoji": "🇪🇺",
       "group": "currency",
-      "value": 295520,
-      "change": 1520
+      "value": 296290,
+      "change": 2290
     },
     {
       "id": "usd",
       "title": "دلار آمریکا",
       "emoji": "🇺🇸",
       "group": "currency",
-      "value": 268300,
-      "change": 1600
+      "value": 269000,
+      "change": 2300
     },
     {
       "id": "sekkeh",
