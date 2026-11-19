@@ -1,6 +1,6 @@
 {
-  "updated_iso": "2026-11-19T10:36:19+00:00",
-  "updated_fa": "14:06",
+  "updated_iso": "2026-11-19T10:42:12+00:00",
+  "updated_fa": "14:12",
   "updated_date": "1405-08-28",
   "currency": "toman",
   "source": "navasan.tech",
@@ -66,16 +66,16 @@
       "title": "طلای ۱۸ عیار (گرم)",
       "emoji": "🥇",
       "group": "gold",
-      "value": 24331690,
-      "change": -138510
+      "value": 24343230,
+      "change": -126970
     },
     {
       "id": "abshodeh",
       "title": "مثقال طلا (آبشده)",
       "emoji": "🥇",
       "group": "gold",
-      "value": 105400000,
-      "change": -600000
+      "value": 105450000,
+      "change": -550000
     }
   ]
 }
