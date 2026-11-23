@@ -1,6 +1,6 @@
 {
-  "updated_iso": "2026-11-23T10:18:09+00:00",
-  "updated_fa": "13:48",
+  "updated_iso": "2026-11-23T10:24:09+00:00",
+  "updated_fa": "13:54",
   "updated_date": "1405-09-02",
   "currency": "toman",
   "source": "navasan.tech",
@@ -10,72 +10,72 @@
       "title": "یورو",
       "emoji": "🇪🇺",
       "group": "currency",
-      "value": 298970,
-      "change": 4900
+      "value": 300070,
+      "change": 6000
     },
     {
       "id": "usd",
       "title": "دلار آمریکا",
       "emoji": "🇺🇸",
       "group": "currency",
-      "value": 272300,
-      "change": 4300
+      "value": 273300,
+      "change": 5300
     },
     {
       "id": "sekkeh",
       "title": "سکه امامی",
       "emoji": "🪙",
       "group": "gold",
-      "value": 252000000,
-      "change": 9000000
+      "value": 251500000,
+      "change": 8500000
     },
     {
       "id": "bahar",
       "title": "سکه بهار آزادی",
       "emoji": "🪙",
       "group": "gold",
-      "value": 237500000,
-      "change": 7500000
+      "value": 239000000,
+      "change": 9000000
     },
     {
       "id": "nim",
       "title": "نیم‌سکه",
       "emoji": "🪙",
       "group": "gold",
-      "value": 133500000,
-      "change": 4500000
+      "value": 134000000,
+      "change": 5000000
     },
     {
       "id": "rob",
       "title": "ربع‌سکه",
       "emoji": "🪙",
       "group": "gold",
-      "value": 74000000,
-      "change": 3500000
+      "value": 74500000,
+      "change": 4000000
     },
     {
       "id": "gerami",
       "title": "سکه گرمی",
       "emoji": "🪙",
       "group": "gold",
-      "value": 35000000,
-      "change": 2000000
+      "value": 36000000,
+      "change": 3000000
     },
     {
       "id": "18ayar",
       "title": "طلای ۱۸ عیار (گرم)",
       "emoji": "🥇",
       "group": "gold",
-      "value": 24089290,
-      "change": 503250
+      "value": 24241650,
+      "change": 655610
     },
     {
       "id": "abshodeh",
       "title": "مثقال طلا (آبشده)",
       "emoji": "🥇",
       "group": "gold",
-      "value": 104350000,
-      "change": 2180000
+      "value": 105010000,
+      "change": 2840000
     }
   ]
 }
