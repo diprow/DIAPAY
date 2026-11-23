@@ -1,6 +1,6 @@
 {
-  "updated_iso": "2026-11-22T18:54:08+00:00",
-  "updated_fa": "22:24",
+  "updated_iso": "2026-11-23T06:00:14+00:00",
+  "updated_fa": "09:30",
   "updated_date": "1405-09-01",
   "currency": "toman",
   "source": "navasan.tech",
@@ -11,7 +11,7 @@
       "emoji": "🇪🇺",
       "group": "currency",
       "value": 294070,
-      "change": -1860
+      "change": 0
     },
     {
       "id": "usd",
@@ -19,30 +19,30 @@
       "emoji": "🇺🇸",
       "group": "currency",
       "value": 268000,
-      "change": -1700
+      "change": 0
     },
     {
       "id": "sekkeh",
       "title": "سکه امامی",
       "emoji": "🪙",
       "group": "gold",
-      "value": 243000000,
-      "change": 3500000
+      "value": 247000000,
+      "change": 4000000
     },
     {
       "id": "bahar",
       "title": "سکه بهار آزادی",
       "emoji": "🪙",
       "group": "gold",
-      "value": 230000000,
-      "change": 3000000
+      "value": 235000000,
+      "change": 5000000
     },
     {
       "id": "nim",
       "title": "نیم‌سکه",
       "emoji": "🪙",
       "group": "gold",
-      "value": 129000000,
+      "value": 131000000,
       "change": 2000000
     },
     {
@@ -50,32 +50,32 @@
       "title": "ربع‌سکه",
       "emoji": "🪙",
       "group": "gold",
-      "value": 70500000,
-      "change": 2500000
+      "value": 71000000,
+      "change": 500000
     },
     {
       "id": "gerami",
       "title": "سکه گرمی",
       "emoji": "🪙",
       "group": "gold",
-      "value": 33000000,
-      "change": 0
+      "value": 34000000,
+      "change": 1000000
     },
     {
       "id": "18ayar",
       "title": "طلای ۱۸ عیار (گرم)",
       "emoji": "🥇",
       "group": "gold",
-      "value": 23586040,
-      "change": 304730
+      "value": 23777640,
+      "change": 191600
     },
     {
       "id": "abshodeh",
       "title": "مثقال طلا (آبشده)",
       "emoji": "🥇",
       "group": "gold",
-      "value": 102170000,
-      "change": 1320000
+      "value": 103000000,
+      "change": 830000
     }
   ]
 }
