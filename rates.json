@@ -1,6 +1,6 @@
 {
-  "updated_iso": "2026-11-23T18:54:18+00:00",
-  "updated_fa": "22:24",
+  "updated_iso": "2026-11-24T06:00:21+00:00",
+  "updated_fa": "09:30",
   "updated_date": "1405-09-02",
   "currency": "toman",
   "source": "navasan.tech",
@@ -11,7 +11,7 @@
       "emoji": "🇪🇺",
       "group": "currency",
       "value": 298510,
-      "change": 4440
+      "change": 0
     },
     {
       "id": "usd",
@@ -19,63 +19,63 @@
       "emoji": "🇺🇸",
       "group": "currency",
       "value": 274000,
-      "change": 6000
+      "change": 0
     },
     {
       "id": "sekkeh",
       "title": "سکه امامی",
       "emoji": "🪙",
       "group": "gold",
-      "value": 257500000,
-      "change": 14500000
+      "value": 259000000,
+      "change": 1500000
     },
     {
       "id": "bahar",
       "title": "سکه بهار آزادی",
       "emoji": "🪙",
       "group": "gold",
-      "value": 246000000,
-      "change": 16000000
+      "value": 248000000,
+      "change": 2000000
     },
     {
       "id": "nim",
       "title": "نیم‌سکه",
       "emoji": "🪙",
       "group": "gold",
-      "value": 136500000,
-      "change": 7500000
+      "value": 137000000,
+      "change": 500000
     },
     {
       "id": "rob",
       "title": "ربع‌سکه",
       "emoji": "🪙",
       "group": "gold",
-      "value": 76500000,
-      "change": 6000000
+      "value": 77000000,
+      "change": 500000
     },
     {
       "id": "gerami",
       "title": "سکه گرمی",
       "emoji": "🪙",
       "group": "gold",
-      "value": 37000000,
-      "change": 4000000
+      "value": 38000000,
+      "change": 1000000
     },
     {
       "id": "18ayar",
       "title": "طلای ۱۸ عیار (گرم)",
       "emoji": "🥇",
       "group": "gold",
-      "value": 25035780,
-      "change": 1449740
+      "value": 25243550,
+      "change": 207770
     },
     {
       "id": "abshodeh",
       "title": "مثقال طلا (آبشده)",
       "emoji": "🥇",
       "group": "gold",
-      "value": 108450000,
-      "change": 6280000
+      "value": 109350000,
+      "change": 900000
     }
   ]
 }
