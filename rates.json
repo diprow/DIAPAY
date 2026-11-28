@@ -1,6 +1,6 @@
 {
-  "updated_iso": "2026-11-27T16:32:43+00:00",
-  "updated_fa": "20:02",
+  "updated_iso": "2026-11-28T06:00:14+00:00",
+  "updated_fa": "09:30",
   "updated_date": "1405-09-06",
   "currency": "toman",
   "source": "navasan.tech",
@@ -10,15 +10,15 @@
       "title": "یورو",
       "emoji": "🇪🇺",
       "group": "currency",
-      "value": 321360,
-      "change": -340
+      "value": 321380,
+      "change": 0
     },
     {
       "id": "usd",
       "title": "دلار آمریکا",
       "emoji": "🇺🇸",
       "group": "currency",
-      "value": 293200,
+      "value": 293800,
       "change": 0
     },
     {
@@ -26,16 +26,16 @@
       "title": "سکه امامی",
       "emoji": "🪙",
       "group": "gold",
-      "value": 265000000,
-      "change": 0
+      "value": 268000000,
+      "change": 3000000
     },
     {
       "id": "bahar",
       "title": "سکه بهار آزادی",
       "emoji": "🪙",
       "group": "gold",
-      "value": 255000000,
-      "change": 0
+      "value": 256000000,
+      "change": 1000000
     },
     {
       "id": "nim",
@@ -66,16 +66,16 @@
       "title": "طلای ۱۸ عیار (گرم)",
       "emoji": "🥇",
       "group": "gold",
-      "value": 25809130,
-      "change": 120040
+      "value": 25855300,
+      "change": -80800
     },
     {
       "id": "abshodeh",
       "title": "مثقال طلا (آبشده)",
       "emoji": "🥇",
       "group": "gold",
-      "value": 111800000,
-      "change": 520000
+      "value": 112000000,
+      "change": -350000
     }
   ]
 }
